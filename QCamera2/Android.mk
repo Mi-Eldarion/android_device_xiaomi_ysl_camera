@@ -16,7 +16,6 @@ LOCAL_SRC_FILES := \
         QCamera2Factory.cpp
 
 #HAL 3.0 source
-LOCAL_CFLAGS += -DQCAMERA_HAL3_SUPPORT
 LOCAL_SRC_FILES += \
         HAL3/QCamera3HWI.cpp \
         HAL3/QCamera3Mem.cpp \
@@ -26,6 +25,27 @@ LOCAL_SRC_FILES += \
         HAL3/QCamera3PostProc.cpp \
         HAL3/QCamera3CropRegionMapper.cpp \
         HAL3/QCamera3StreamMem.cpp
+
+#HAL 1.0 source
+ 
+ifeq ($(TARGET_SUPPORT_HAL1),false)
+LOCAL_CFLAGS += -DQCAMERA_HAL3_SUPPORT
+else
+LOCAL_CFLAGS += -DQCAMERA_HAL1_SUPPORT
+LOCAL_SRC_FILES += \
+        HAL/QCamera2HWI.cpp \
+        HAL/QCameraMuxer.cpp \
+        HAL/QCameraMem.cpp \
+        HAL/QCameraStateMachine.cpp \
+        HAL/QCameraChannel.cpp \
+        HAL/QCameraStream.cpp \
+        HAL/QCameraPostProc.cpp \
+        HAL/QCamera2HWICallbacks.cpp \
+        HAL/QCameraParameters.cpp \
+ 	HAL/CameraParameters.cpp \
+        HAL/QCameraParametersIntf.cpp \
+        HAL/QCameraThermalAdapter.cpp
+endif
 
 ifeq (1,$(filter 1,$(shell echo "$$(( $(PLATFORM_SDK_VERSION) >= 31 ))" )))
 LOCAL_CFLAGS := -Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-compound-token-split-by-macro
